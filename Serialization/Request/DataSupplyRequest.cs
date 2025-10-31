@@ -19,6 +19,8 @@ namespace Mtd.Siri.Core.Serialization.Request
 
 		public DataSupplyRequest(string consumer)
 		{
+			ArgumentException.ThrowIfNullOrWhiteSpace(consumer);
+
 			Timestamp = TimeProvider.System.GetLocalNow();
 			Consumer = consumer;
 		}
