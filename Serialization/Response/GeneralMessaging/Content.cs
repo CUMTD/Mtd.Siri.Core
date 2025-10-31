@@ -1,5 +1,4 @@
-﻿using System;
-using System.Xml.Serialization;
+﻿using System.Xml.Serialization;
 
 namespace Mtd.Siri.Core.Serialization.Response.GeneralMessaging
 {

@@ -1,5 +1,5 @@
-﻿using System.Xml.Serialization;
-using Mtd.Siri.Core.Serialization.Response.StopMonitoring;
+﻿using Mtd.Siri.Core.Serialization.Response.StopMonitoring;
+using System.Xml.Serialization;
 
 namespace Mtd.Siri.Core.Serialization.Response.ServiceDeliveries
 {

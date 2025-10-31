@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Logging;
 using Mtd.Siri.Core.Client.Generic;
 using Mtd.Siri.Core.Serialization.Request.RequestRoot;
 using Mtd.Siri.Core.Serialization.Request.StopMonitoring;
@@ -5,7 +6,6 @@ using Mtd.Siri.Core.Serialization.Response;
 using Mtd.Siri.Core.Serialization.Response.ServiceDeliveries;
 using Mtd.Siri.Core.Serialization.Response.StopMonitoring;
 using Mtd.Stopwatch.Core.Entities.Realtime;
-using Microsoft.Extensions.Logging;
 
 namespace Mtd.Siri.Core.Client
 {

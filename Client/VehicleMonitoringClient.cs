@@ -1,13 +1,10 @@
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
+using Microsoft.Extensions.Logging;
 using Mtd.Siri.Core.Client.Generic;
 using Mtd.Siri.Core.Serialization.Request.RequestRoot;
 using Mtd.Siri.Core.Serialization.Request.VehicleMonitoring;
 using Mtd.Siri.Core.Serialization.Response;
 using Mtd.Siri.Core.Serialization.Response.ServiceDeliveries;
 using Mtd.Siri.Core.Serialization.Response.VehicleMonitoring;
-using Microsoft.Extensions.Logging;
 using Mtd.Stopwatch.Core.Entities.Realtime;
 
 namespace Mtd.Siri.Core.Client

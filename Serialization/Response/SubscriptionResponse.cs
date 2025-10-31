@@ -1,4 +1,3 @@
-using System;
 using System.Xml.Serialization;
 
 namespace Mtd.Siri.Core.Serialization.Response
@@ -44,6 +43,6 @@ namespace Mtd.Siri.Core.Serialization.Response
 		public SubscriptionResponse? SubscriptionResponse { get; set; }
 
 		[XmlAttribute("version")]
-		public string? Version { get; set; }= string.Empty!;
+		public string? Version { get; set; } = string.Empty!;
 	}
 }

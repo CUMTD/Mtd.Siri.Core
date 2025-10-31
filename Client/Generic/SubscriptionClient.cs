@@ -1,13 +1,8 @@
-using System;
-using System.Collections.Generic;
-using System.Net.Http;
-using System.Threading;
-using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 using Mtd.Siri.Core.Serialization.Request;
 using Mtd.Siri.Core.Serialization.Request.RequestRoot;
 using Mtd.Siri.Core.Serialization.Response;
 using Mtd.Stopwatch.Core.Entities.Realtime;
-using Microsoft.Extensions.Logging;
 
 namespace Mtd.Siri.Core.Client.Generic
 {

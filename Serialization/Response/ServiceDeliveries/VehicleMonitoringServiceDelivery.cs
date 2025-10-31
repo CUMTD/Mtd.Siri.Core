@@ -1,5 +1,5 @@
-﻿using System.Xml.Serialization;
-using Mtd.Siri.Core.Serialization.Response.VehicleMonitoring;
+﻿using Mtd.Siri.Core.Serialization.Response.VehicleMonitoring;
+using System.Xml.Serialization;
 
 namespace Mtd.Siri.Core.Serialization.Response.ServiceDeliveries
 {

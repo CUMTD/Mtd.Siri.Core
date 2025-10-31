@@ -1,10 +1,10 @@
+using Microsoft.Extensions.Logging;
+using Mtd.Siri.Core.Serialization.Response;
+using Mtd.Stopwatch.Core.Entities.Realtime;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Xml;
 using System.Xml.Serialization;
-using Mtd.Siri.Core.Serialization.Response;
-using Mtd.Stopwatch.Core.Entities.Realtime;
-using Microsoft.Extensions.Logging;
-using System.Runtime.Serialization;
 
 namespace Mtd.Siri.Core.Client.Generic
 {
@@ -38,7 +38,7 @@ namespace Mtd.Siri.Core.Client.Generic
 					.PostAsync(endpoint, content, cancellationToken)
 					.ConfigureAwait(false);
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				_logger.LogError(ex, "Failed to post to {endpoint}", endpoint);
 				throw;

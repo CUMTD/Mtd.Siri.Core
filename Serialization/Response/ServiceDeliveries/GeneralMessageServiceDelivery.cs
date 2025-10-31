@@ -1,5 +1,5 @@
-﻿using System.Xml.Serialization;
-using Mtd.Siri.Core.Serialization.Response.GeneralMessaging;
+﻿using Mtd.Siri.Core.Serialization.Response.GeneralMessaging;
+using System.Xml.Serialization;
 
 namespace Mtd.Siri.Core.Serialization.Response.ServiceDeliveries
 {

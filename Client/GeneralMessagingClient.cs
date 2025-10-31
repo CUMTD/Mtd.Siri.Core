@@ -1,11 +1,10 @@
-using System.Text;
+using Microsoft.Extensions.Logging;
 using Mtd.Siri.Core.Client.Generic;
 using Mtd.Siri.Core.Serialization.Request.GeneralMessaging;
 using Mtd.Siri.Core.Serialization.Request.RequestRoot;
 using Mtd.Siri.Core.Serialization.Response;
-using Mtd.Siri.Core.Serialization.Response.GeneralMessaging;
 using Mtd.Siri.Core.Serialization.Response.ServiceDeliveries;
-using Microsoft.Extensions.Logging;
+using System.Text;
 using Message = Mtd.Stopwatch.Core.Entities.Realtime.Message;
 
 namespace Mtd.Siri.Core.Client
@@ -29,8 +28,8 @@ namespace Mtd.Siri.Core.Client
 
 			return messages
 				.Select(ToMessage)
-				.Where(m=>m!=null)
-				.Select(m=>m!);
+				.Where(m => m != null)
+				.Select(m => m!);
 		}
 
 		private static Message? ToMessage(Serialization.Response.GeneralMessaging.Message? message)
