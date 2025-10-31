@@ -1,33 +1,32 @@
 using System.Xml.Serialization;
 
-namespace Mtd.Siri.Core.Serialization.Request.StopMonitoring
+namespace Mtd.Siri.Core.Serialization.Request.StopMonitoring;
+
+[Serializable]
+[XmlType(AnonymousType = true, Namespace = "http://www.siri.org.uk/")]
+public class StopMonitoringRequest
 {
-	[Serializable]
-	[XmlType(AnonymousType = true, Namespace = "http://www.siri.org.uk/")]
-	public class StopMonitoringRequest
+	[XmlElement("RequestTimestamp")]
+	public DateTimeOffset Timestamp { get; set; }
+
+	[XmlElement("PreviewInterval", DataType = "duration")]
+	public string? PreviewTime { get; set; }
+
+	[XmlElement("MonitoringRef")]
+	public string StopPointId { get; set; } = default!;
+
+	[XmlAttribute("version")]
+	public string Version { get; set; } = "1.0";
+
+	public StopMonitoringRequest()
 	{
-		[XmlElement("RequestTimestamp")]
-		public DateTimeOffset Timestamp { get; set; }
+		Timestamp = TimeProvider.System.GetLocalNow();
+	}
 
-		[XmlElement("PreviewInterval", DataType = "duration")]
-		public string? PreviewTime { get; set; }
-
-		[XmlElement("MonitoringRef")]
-		public string StopPointId { get; set; } = default!;
-
-		[XmlAttribute("version")]
-		public string Version { get; set; } = "1.0";
-
-		public StopMonitoringRequest()
-		{
-			Timestamp = TimeProvider.System.GetLocalNow();
-		}
-
-		public StopMonitoringRequest(string stopPointId, int previewMinutes = 30) : this()
-		{
-			var pt = Math.Min(Math.Max(30, previewMinutes), 60);
-			PreviewTime = $"PT{pt}M";
-			StopPointId = stopPointId;
-		}
+	public StopMonitoringRequest(string stopPointId, int previewMinutes = 30) : this()
+	{
+		var pt = Math.Min(Math.Max(30, previewMinutes), 60);
+		PreviewTime = $"PT{pt}M";
+		StopPointId = stopPointId;
 	}
 }

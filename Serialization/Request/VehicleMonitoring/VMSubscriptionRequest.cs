@@ -1,21 +1,20 @@
 using System.Xml.Serialization;
 
-namespace Mtd.Siri.Core.Serialization.Request.VehicleMonitoring
+namespace Mtd.Siri.Core.Serialization.Request.VehicleMonitoring;
+
+public class VMSubscriptionRequest : SubscriptionRequest
 {
-	public class VMSubscriptionRequest : SubscriptionRequest
+	[XmlElement("VehicleMonitoringSubscriptionRequest")]
+	public VehicleMonitoringSubscriptionRequest SubscriptionRequest { get; set; }
+
+	public VMSubscriptionRequest()
 	{
-		[XmlElement("VehicleMonitoringSubscriptionRequest")]
-		public VehicleMonitoringSubscriptionRequest SubscriptionRequest { get; set; }
+		SubscriptionRequest = new VehicleMonitoringSubscriptionRequest();
+	}
 
-		public VMSubscriptionRequest()
-		{
-			SubscriptionRequest = new VehicleMonitoringSubscriptionRequest();
-		}
-
-		public override void SetRequestor(string requestor)
-		{
-			base.SetRequestor(requestor);
-			SubscriptionRequest?.SetRequestor(requestor);
-		}
+	public override void SetRequestor(string requestor)
+	{
+		base.SetRequestor(requestor);
+		SubscriptionRequest?.SetRequestor(requestor);
 	}
 }
