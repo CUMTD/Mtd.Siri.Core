@@ -17,7 +17,12 @@
 		<None Remove="nuget.config" />
 		<None Remove="readme.md" />
 	</ItemGroup>
-
+	
+	<ItemGroup>
+		<None Include=".\icon.png" Pack="true" PackagePath="\" />
+		<None Include=".\readme.md" Pack="true" PackagePath="\" />
+	</ItemGroup>
+	
 	<ItemGroup>
 	  <PackageReference Include="Mtd.Stopwatch.Core" />
 	</ItemGroup>
