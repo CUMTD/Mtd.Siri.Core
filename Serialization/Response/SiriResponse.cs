@@ -9,7 +9,7 @@ namespace Mtd.Siri.Core.Serialization.Response
 	public class SiriResponse<T>
 		where T : ServiceDelivery
 	{
-		public T ServiceDelivery { get; set; }
+		public T ServiceDelivery { get; set; } = default!;
 
 		[XmlAttribute("version")]
 		public decimal Version { get; set; }

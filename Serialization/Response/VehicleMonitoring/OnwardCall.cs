@@ -10,10 +10,10 @@ namespace Mtd.Siri.Core.Serialization.Response.VehicleMonitoring
 		public byte VisitNumber { get; set; }
 
 		[XmlElement("StopPointName")]
-		public string StopName { get; set; }
+		public string StopName { get; set; } = string.Empty!;
 
 		[XmlElement("StopPointRef")]
-		public string StopId { get; set; }
+		public string StopId { get; set; } = string.Empty!;
 
 		[XmlElement("AimedArrivalTime")]
 		public DateTime ScheduledArrival { get; set; }

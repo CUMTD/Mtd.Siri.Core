@@ -12,6 +12,7 @@ namespace Mtd.Siri.Core.Serialization.Request.StopMonitoring
 		public StopMonitoringServiceRequest() : base("cumtdrr")
 		{
 			MessageIdentifier = "0caaa79f";
+			StopPointRequest = [];
 		}
 	}
 }

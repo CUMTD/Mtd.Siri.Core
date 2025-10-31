@@ -10,6 +10,6 @@ namespace Mtd.Siri.Core.Serialization.Response.VehicleMonitoring
 		[XmlElement(DataType = "date")]
 		public DateTime DataFrameRef { get; set; }
 
-		public string DatedVehicleJourneyRef { get; set; }
+		public string DatedVehicleJourneyRef { get; set; } = string.Empty!;
 	}
 }

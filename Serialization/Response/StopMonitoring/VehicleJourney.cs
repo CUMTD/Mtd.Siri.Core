@@ -11,6 +11,6 @@ namespace Mtd.Siri.Core.Serialization.Response.StopMonitoring
 		public DateTime DataFrame { get; set; }
 
 		[XmlElement("DatedVehicleJourneyRef")]
-		public string TripPrefix { get; set; }
+		public string TripPrefix { get; set; } = default!;
 	}
 }

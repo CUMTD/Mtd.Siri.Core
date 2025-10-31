@@ -38,15 +38,25 @@ namespace Mtd.Siri.Core.Client
 			return RequestData(request, cancellationToken);
 		}
 
-		protected override IEnumerable<Departure> ConvertResponse(SiriResponse<StopMonitoringServiceDelivery> siriResponse) => siriResponse
+		protected override IEnumerable<Departure> ConvertResponse(SiriResponse<StopMonitoringServiceDelivery> siriResponse)
+		{
+
+			if (siriResponse?.ServiceDelivery?.Result == null)
+			{
+				return [];
+			}
+
+			return siriResponse
+
 				.ServiceDelivery
 				.Result
 				.Where(r => r.Results != default) // because siri returns an empty StopMonitoringDelivery if there are no departures for a stop point
-				.SelectMany(r => r.Results)
+				.SelectMany(r => r.Results!)
 				.Select(ToDeparture)
 				.Where(d => d != default)
 				.Select(d => d!)
 				.OrderBy(d => d.EstimatedDeparture);
+		}
 
 		private static Departure? ToDeparture(MonitoredStopVisit stopVisit) => stopVisit?.MonitoredVehicleJourney?.Realtime == default
 				? default
@@ -55,21 +65,21 @@ namespace Mtd.Siri.Core.Client
 					StopId = stopVisit.StopId.Trim(),
 					Headsign = stopVisit.MonitoredVehicleJourney.Realtime?.Headsign?.Trim(),
 					RouteId = stopVisit.MonitoredVehicleJourney?.RouteId?.Trim(),
-					RouteNumber = stopVisit.MonitoredVehicleJourney?.Number.Trim(),
-					Direction = stopVisit.MonitoredVehicleJourney?.Direction.Trim(),
+					RouteNumber = stopVisit.MonitoredVehicleJourney?.Number?.Trim(),
+					Direction = stopVisit.MonitoredVehicleJourney?.Direction?.Trim(),
 					OriginStopId = stopVisit.MonitoredVehicleJourney?.OriginStopId?.Trim(),
-					DestinationStopId = stopVisit.MonitoredVehicleJourney?.DestinationStopId.Trim(),
-					Destination = stopVisit.MonitoredVehicleJourney?.DestinationStopName.Trim(),
-					VehicleId = stopVisit.MonitoredVehicleJourney?.VehicleNumber.Trim() ?? "UNKNOWN",
+					DestinationStopId = stopVisit.MonitoredVehicleJourney?.DestinationStopId?.Trim(),
+					Destination = stopVisit.MonitoredVehicleJourney?.DestinationStopName?.Trim(),
+					VehicleId = stopVisit.MonitoredVehicleJourney?.VehicleNumber?.Trim() ?? "UNKNOWN",
 					Latitude = stopVisit.MonitoredVehicleJourney?.Location?.Latitude ?? 0,
 					Longitude = stopVisit.MonitoredVehicleJourney?.Location?.Longitude ?? 0,
 					ShapeId = stopVisit.MonitoredVehicleJourney?.ShapeId?.Trim(),
 					BlockId = stopVisit.MonitoredVehicleJourney?.BlockId?.Trim(),
 					TripPrefix = stopVisit.MonitoredVehicleJourney?.VehicleJourney?.TripPrefix?.Trim(),
 					RecordedTime = stopVisit.RecordedAt,
-					ScheduledDeparture = stopVisit.MonitoredVehicleJourney.Realtime.ScheduledDeparture,
-					EstimatedDeparture = stopVisit.MonitoredVehicleJourney.Realtime.EstimatedDeparture,
-					IsRealTime = stopVisit.MonitoredVehicleJourney.IsRealtime
+					ScheduledDeparture = stopVisit.MonitoredVehicleJourney?.Realtime?.ScheduledDeparture,
+					EstimatedDeparture = stopVisit.MonitoredVehicleJourney?.Realtime?.EstimatedDeparture,
+					IsRealTime = stopVisit.MonitoredVehicleJourney?.IsRealtime ?? false
 				};
 	}
 }

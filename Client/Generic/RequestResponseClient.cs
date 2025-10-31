@@ -1,7 +1,3 @@
-using System.Collections.Generic;
-using System.Net.Http;
-using System.Threading;
-using System.Threading.Tasks;
 using Mtd.Siri.Core.Serialization.Request;
 using Mtd.Siri.Core.Serialization.Request.RequestRoot;
 using Mtd.Siri.Core.Serialization.Response;
@@ -10,22 +6,25 @@ using Microsoft.Extensions.Logging;
 
 namespace Mtd.Siri.Core.Client.Generic
 {
-	public abstract class RequestResponseClient<TServiceRequest, TServiceDelivery, TResult> : Client<TServiceDelivery, TResult>
-		where TServiceRequest : ServiceRequest, new()
-		where TServiceDelivery : RequestResponseServiceDelivery
-		where TResult : IRealtimeData
+	public abstract class RequestResponseClient<T_ServiceRequest, T_ServiceDelivery, T_Result> : Client<T_ServiceDelivery, T_Result>
+		where T_ServiceRequest : ServiceRequest, new()
+		where T_ServiceDelivery : RequestResponseServiceDelivery
+		where T_Result : IRealtimeData
 	{
 		private readonly string _endpointAddress;
 		private readonly bool _logResponse;
 
-		protected RequestResponseClient(RequestResponseClientConfig config, HttpClient httpClient, ILogger<RequestResponseClient<TServiceRequest, TServiceDelivery, TResult>> logger)
+		protected RequestResponseClient(RequestResponseClientConfig config, HttpClient httpClient, ILogger<RequestResponseClient<T_ServiceRequest, T_ServiceDelivery, T_Result>> logger)
 			: base(httpClient, logger)
 		{
+			ArgumentNullException.ThrowIfNull(config, nameof(config));
+			ArgumentException.ThrowIfNullOrWhiteSpace(config.Endpoint, nameof(config.Endpoint));
+
 			_endpointAddress = config.Endpoint;
 			_logResponse = config.LogResponse;
 		}
 
-		protected async Task<IEnumerable<TResult>> RequestData(RequestResponseRequest<TServiceRequest> request, CancellationToken cancellationToken)
+		protected async Task<IEnumerable<T_Result>> RequestData(RequestResponseRequest<T_ServiceRequest> request, CancellationToken cancellationToken)
 		{
 			// convert to xml
 			var xml = await SerializeObject(request).ConfigureAwait(false);
@@ -40,7 +39,7 @@ namespace Mtd.Siri.Core.Client.Generic
 			}
 
 			var contentStream = await response.Content.ReadAsStreamAsync(cancellationToken).ConfigureAwait(false);
-			var result = await DeserializeObject<SiriResponse<TServiceDelivery>>(contentStream).ConfigureAwait(false);
+			var result = await DeserializeObject<SiriResponse<T_ServiceDelivery>>(contentStream).ConfigureAwait(false);
 
 			return ConvertResponse(result);
 		}

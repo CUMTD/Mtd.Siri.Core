@@ -10,9 +10,10 @@ namespace Mtd.Siri.Core.Serialization.Response
 		[XmlElement]
 		public DateTime ResponseTimestamp { get; set; }
 		[XmlElement]
-		public string SubscriberRef { get; set; }
+		public string? SubscriberRef { get; set; }
+
 		[XmlElement]
-		public string SubscriptionRef { get; set; }
+		public string? SubscriptionRef { get; set; }
 		[XmlElement]
 		public bool Status { get; set; }
 	}
@@ -26,10 +27,9 @@ namespace Mtd.Siri.Core.Serialization.Response
 		public DateTime ResponseTimestamp { get; set; }
 
 		[XmlElement]
-		public string ResponderRef { get; set; }
+		public string? ResponderRef { get; set; }
 
-
-		public SubscriptionResponseStatus ResponseStatus { get; set; }
+		public SubscriptionResponseStatus ResponseStatus { get; set; } = default!;
 
 		[XmlElement]
 		public DateTime ServiceStartedTime { get; set; }
@@ -41,9 +41,9 @@ namespace Mtd.Siri.Core.Serialization.Response
 	public partial class SiriSubscriptionResponseContainer
 	{
 		[XmlElement]
-		public SubscriptionResponse SubscriptionResponse { get; set; }
+		public SubscriptionResponse? SubscriptionResponse { get; set; }
 
 		[XmlAttribute("version")]
-		public string Version { get; set; }
+		public string? Version { get; set; }= string.Empty!;
 	}
 }

@@ -11,7 +11,7 @@ namespace Mtd.Siri.Core.Serialization.Request
 		public DateTimeOffset Timestamp { get; set; }
 
 		[XmlElement("RequestorRef")]
-		public string Requestor { get; set; }
+		public string Requestor { get; set; } = string.Empty!;
 
 		protected SubscriptionRequest()
 		{

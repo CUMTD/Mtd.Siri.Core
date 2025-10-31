@@ -11,8 +11,8 @@ namespace Mtd.Siri.Core.Serialization.Response.StopMonitoring
 		public DateTime RecordedAt { get; set; }
 
 		[XmlElement("MonitoringRef")]
-		public string StopId { get; set; }
+		public string StopId { get; set; } = string.Empty!;
 
-		public MonitoredVehicleJourney MonitoredVehicleJourney { get; set; }
+		public MonitoredVehicleJourney MonitoredVehicleJourney { get; set; } = default!;
 	}
 }

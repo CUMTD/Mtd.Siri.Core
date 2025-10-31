@@ -7,6 +7,6 @@
   <ItemGroup>
   </ItemGroup>
   <ItemGroup>
-    <PackageVersion Include="Mtd.Stopwatch.Core" Version="9.6.9" />
+    <PackageVersion Include="Mtd.Stopwatch.Core" Version="9.6.10" />
   </ItemGroup>
 </Project>

@@ -19,6 +19,9 @@ namespace Mtd.Siri.Core.Client
 		public VehicleMonitoringClient(VehicleMonitoringClientConfig config, HttpClient httpClient, ILogger<VehicleMonitoringClient> logger)
 			: base(config, httpClient, logger)
 		{
+			ArgumentNullException.ThrowIfNull(config, nameof(config));
+			ArgumentOutOfRangeException.ThrowIfLessThan(config.SubscriptionIntervalMinutes, 1, nameof(config.SubscriptionIntervalMinutes));
+
 			_subscriptionIntervalMinutes = config.SubscriptionIntervalMinutes;
 		}
 
@@ -57,8 +60,14 @@ namespace Mtd.Siri.Core.Client
 				_logger.LogWarning("{item} was null in {param}.", nameof(MonitoredVehicleJourney), nameof(vehicleActivity));
 				return null;
 			}
+			else if (string.IsNullOrEmpty(nullableVehicleJourney.VehicleNumber))
+			{
+				// we don't want to do anything if the vehicle number isn't set.
+				// this should never happen, but just in case.
+				return null;
+			}
 
-			MonitoredVehicleJourney vehicleJourney = nullableVehicleJourney!;
+			var vehicleJourney = nullableVehicleJourney!;
 			var previousStop = vehicleJourney
 				.PreviousStops
 				?.OrderByDescending(ps => ps.VisitNumber)
@@ -68,7 +77,6 @@ namespace Mtd.Siri.Core.Client
 				.FutureStops
 				?.OrderBy(ps => ps.VisitNumber)
 				.FirstOrDefault();
-
 
 			// Set trip id
 			// account for trip ids that already have the block part appened (__<BLOCK_ID>) and trip ids that do not.
@@ -86,27 +94,27 @@ namespace Mtd.Siri.Core.Client
 			{
 				RealTime = vehicleJourney.MonitoredCall == default || vehicleJourney.MonitoredCall?.ScheduledDeparture == null ? null : new MonitoredVehicleRealTime
 				{
-					ExpectedArrival = vehicleJourney.MonitoredCall.ExpectedArrival,
-					ExpectedDeparture = vehicleJourney.MonitoredCall.ExpectedDeparture,
-					ScheduledArrival = vehicleJourney.MonitoredCall.ScheduledArrival,
-					ScheduledDeparture = vehicleJourney.MonitoredCall.ScheduledDeparture
+					ExpectedArrival = vehicleJourney!.MonitoredCall?.ExpectedArrival,
+					ExpectedDeparture = vehicleJourney!.MonitoredCall?.ExpectedDeparture,
+					ScheduledArrival = vehicleJourney!.MonitoredCall?.ScheduledArrival,
+					ScheduledDeparture = vehicleJourney!.MonitoredCall!.ScheduledDeparture.Value
 				},
-				BlockId = vehicleJourney.BlockId,
-				DestinationStop = new MonitoredVehicleItinerary(vehicleJourney.DestinationStopId, vehicleJourney.DestinationStopName),
-				Direction = vehicleJourney.Direction,
+				BlockId = vehicleJourney!.BlockId,
+				Direction = vehicleJourney!.Direction,
 				Headsign = vehicleJourney?.MonitoredCall?.Headsign ?? default,
 				IsCanceled = false,
-				IsInCongestion = vehicleJourney.IsInCongestion,
-				IsInPanic = vehicleJourney.IsInPanic,
-				IsRealtime = vehicleJourney.IsMonitored,
-				Latitude = vehicleJourney.Location.Latitude,
-				Longitude = vehicleJourney.Location.Longitude,
-				MonitoringError = vehicleJourney.MonitoringError,
-				NextStop = new MonitoredVehicleItinerary(nextStop?.StopId, nextStop?.StopName),
-				OriginStop = new MonitoredVehicleItinerary(vehicleJourney.OriginStopId, string.Empty),
-				PreviousStop = new MonitoredVehicleItinerary(previousStop?.StopId, previousStop?.StopName),
-				RouteId = vehicleJourney.RouteId,
-				RouteNumber = vehicleJourney.RouteNumber,
+				IsInCongestion = vehicleJourney!.IsInCongestion ?? false,
+				IsInPanic = vehicleJourney.IsInPanic ?? false,
+				IsRealtime = vehicleJourney.IsMonitored ?? false,
+				Latitude = vehicleJourney?.Location?.Latitude ?? -1,
+				Longitude = vehicleJourney?.Location?.Longitude ?? -1,
+				MonitoringError = vehicleJourney!.MonitoringError,
+				NextStop = nextStop == null ? null : new MonitoredVehicleItinerary(nextStop!.StopId, nextStop!.StopName),
+				OriginStop = string.IsNullOrEmpty(vehicleJourney.OriginStopId) ? null : new MonitoredVehicleItinerary(vehicleJourney!.OriginStopId, null),
+				DestinationStop = string.IsNullOrEmpty(vehicleJourney.DestinationStopId) ? null : new MonitoredVehicleItinerary(vehicleJourney!.DestinationStopId, vehicleJourney!.DestinationStopName),
+				PreviousStop = string.IsNullOrEmpty(previousStop?.StopId) ? null : new MonitoredVehicleItinerary(previousStop!.StopId, previousStop!.StopName),
+				RouteId = vehicleJourney!.RouteId,
+				RouteNumber = vehicleJourney!.RouteNumber,
 				TripId = tripId,
 				Updated = TimeProvider.System.GetLocalNow(),
 				VehicleNumber = vehicleJourney.VehicleNumber,

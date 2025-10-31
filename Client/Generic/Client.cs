@@ -1,15 +1,10 @@
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Net.Http;
 using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Serialization;
 using Mtd.Siri.Core.Serialization.Response;
 using Mtd.Stopwatch.Core.Entities.Realtime;
 using Microsoft.Extensions.Logging;
+using System.Runtime.Serialization;
 
 namespace Mtd.Siri.Core.Client.Generic
 {
@@ -23,8 +18,11 @@ namespace Mtd.Siri.Core.Client.Generic
 
 		protected Client(HttpClient httpClient, ILogger<Client<TServiceDelivery, TResult>> logger)
 		{
-			_httpClient = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
-			_logger = logger ?? throw new ArgumentNullException(nameof(logger));
+			ArgumentNullException.ThrowIfNull(httpClient, nameof(httpClient));
+			ArgumentNullException.ThrowIfNull(logger, nameof(logger));
+
+			_httpClient = httpClient;
+			_logger = logger;
 		}
 
 		#region Protected Methods
@@ -33,20 +31,17 @@ namespace Mtd.Siri.Core.Client.Generic
 		{
 			var content = new StringContent(requestData, Encoding.UTF8, "text/xml");
 
-			HttpResponseMessage response = default;
+			HttpResponseMessage response;
 			try
 			{
-				response = await _httpClient.PostAsync(endpoint, content, cancellationToken).ConfigureAwait(false);
+				response = await _httpClient
+					.PostAsync(endpoint, content, cancellationToken)
+					.ConfigureAwait(false);
 			}
 			catch(Exception ex)
 			{
 				_logger.LogError(ex, "Failed to post to {endpoint}", endpoint);
-			}
-
-			if (response == default)
-			{
-				_logger.LogWarning("SIRI Response was null");
-				throw new Exception("Response was null");
+				throw;
 			}
 
 			if (!response.IsSuccessStatusCode)
@@ -59,7 +54,7 @@ namespace Mtd.Siri.Core.Client.Generic
 			return response;
 		}
 
-		protected Task<string> SerializeObject<T>(T toSerialize)
+		protected Task<string> SerializeObject<T>(T toSerialize) where T : class
 		{
 			var type = toSerialize.GetType();
 			var serializer = new XmlSerializer(type);
@@ -84,10 +79,10 @@ namespace Mtd.Siri.Core.Client.Generic
 			return Task.FromResult(serialized);
 		}
 
-		protected Task<T> DeserializeObject<T>(Stream objectStream)
+		protected Task<T> DeserializeObject<T>(Stream objectStream) where T : class
 		{
 			var serializer = new XmlSerializer(typeof(T));
-			var obj = (T)serializer.Deserialize(objectStream);
+			var obj = serializer.Deserialize(objectStream) as T ?? throw new SerializationException($"Could not deserialize type \"{typeof(T).Name}\"");
 			_logger.LogTrace("Deserialized object {type} from xml", typeof(T).Name);
 			return Task.FromResult(obj);
 		}

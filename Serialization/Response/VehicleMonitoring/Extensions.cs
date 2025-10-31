@@ -13,6 +13,6 @@ namespace Mtd.Siri.Core.Serialization.Response.VehicleMonitoring
 
 		[XmlAnyElement]
 		public System.Xml.XmlElement[]? UnknownElements { get; set; }
-
 	}
 }
+
