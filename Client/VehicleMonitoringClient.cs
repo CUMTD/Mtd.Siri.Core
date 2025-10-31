@@ -1,5 +1,6 @@
 using Microsoft.Extensions.Logging;
 using Mtd.Siri.Core.Client.Generic;
+using Mtd.Siri.Core.Config;
 using Mtd.Siri.Core.Serialization.Request.RequestRoot;
 using Mtd.Siri.Core.Serialization.Request.VehicleMonitoring;
 using Mtd.Siri.Core.Serialization.Response;
@@ -9,11 +10,11 @@ using Mtd.Stopwatch.Core.Entities.Realtime;
 
 namespace Mtd.Siri.Core.Client;
 
-public sealed class VehicleMonitoringClient : SubscriptionClient<VMSubscriptionRequest, VehicleMonitoringServiceDelivery, MonitoredVehicle>
+public sealed class VehicleMonitoringClient : SubscriptionClient<VMSubscriptionRequest, VehicleMonitoringServiceDelivery, MonitoredVehicle>, IVehicleMonitoringClient
 {
 	private readonly int _subscriptionIntervalMinutes;
 
-	public VehicleMonitoringClient(VehicleMonitoringClientConfig config, HttpClient httpClient, ILogger<VehicleMonitoringClient> logger)
+	public VehicleMonitoringClient(VehicleMonitoringClientOptions config, HttpClient httpClient, ILogger<VehicleMonitoringClient> logger)
 		: base(config, httpClient, logger)
 	{
 		ArgumentNullException.ThrowIfNull(config, nameof(config));

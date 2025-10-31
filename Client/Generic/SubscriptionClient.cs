@@ -1,4 +1,5 @@
 using Microsoft.Extensions.Logging;
+using Mtd.Siri.Core.Config;
 using Mtd.Siri.Core.Serialization.Request;
 using Mtd.Siri.Core.Serialization.Request.RequestRoot;
 using Mtd.Siri.Core.Serialization.Response;
@@ -6,36 +7,24 @@ using Mtd.Stopwatch.Core.Entities.Realtime;
 
 namespace Mtd.Siri.Core.Client.Generic;
 
-public abstract class SubscriptionClient<TSubscriptionRequest, TServiceDelivery, TResult> : Client<TServiceDelivery, TResult>
-	where TSubscriptionRequest : SubscriptionRequest, new()
+public abstract class SubscriptionClient<TSubscriptionRequest, TServiceDelivery, TResult> : Client<TServiceDelivery, TResult>, ISubscriptionClient<TSubscriptionRequest, TResult> where TSubscriptionRequest : SubscriptionRequest, new()
 	where TServiceDelivery : ServiceDelivery
 	where TResult : IRealtimeData
 {
-	protected readonly string _subscribeAddress;
-	protected readonly string _dataSuplyEndpointAddress;
+	protected readonly Uri _subscribeAddress;
+	protected readonly Uri _dataSuplyEndpointAddress;
 	protected readonly string _subscriberRef;
 
-	protected SubscriptionClient(SubscriptionClientConfig config, HttpClient httpClient, ILogger<SubscriptionClient<TSubscriptionRequest, TServiceDelivery, TResult>> logger)
+	protected SubscriptionClient(SubscriptionClientOptions config, HttpClient httpClient, ILogger<SubscriptionClient<TSubscriptionRequest, TServiceDelivery, TResult>> logger)
 		: base(httpClient, logger)
 	{
-		if (string.IsNullOrEmpty(config.SubscribeAddress))
-		{
-			throw new ArgumentNullException(nameof(config), "No SubscriberAddress");
-		}
+		ArgumentNullException.ThrowIfNull(config, nameof(config));
+		ArgumentNullException.ThrowIfNull(config.SubscribeAddress, nameof(config.SubscribeAddress));
+		ArgumentNullException.ThrowIfNull(config.DataSuplyEndpointAddress, nameof(config.DataSuplyEndpointAddress));
+		ArgumentException.ThrowIfNullOrWhiteSpace(config.SubscriberRef, nameof(config.SubscriberRef));
 
 		_subscribeAddress = config.SubscribeAddress;
-
-		if (string.IsNullOrEmpty(config.DataSuplyEndpointAddress))
-		{
-			throw new ArgumentNullException(nameof(config), "No DataSuplyEndpointAddress");
-		}
-
 		_dataSuplyEndpointAddress = config.DataSuplyEndpointAddress;
-		if (string.IsNullOrEmpty(config.SubscriberRef))
-		{
-			throw new ArgumentNullException(nameof(config), "No SubscriberRef");
-		}
-
 		_subscriberRef = config.SubscriberRef;
 	}
 
@@ -47,7 +36,7 @@ public abstract class SubscriptionClient<TSubscriptionRequest, TServiceDelivery,
 		return subscriptionRequest;
 	}
 
-	public async Task<SubscriptionRequest<TSubscriptionRequest>> Subscribe(CancellationToken cancellationToken)
+	public async Task<SubscriptionRequest<TSubscriptionRequest>> SubscribeAsync(CancellationToken cancellationToken)
 	{
 		// create request
 		var subscriptionRequest = CreateRequest();
@@ -58,12 +47,12 @@ public abstract class SubscriptionClient<TSubscriptionRequest, TServiceDelivery,
 		var response = await PostRequest(_subscribeAddress, xml, cancellationToken).ConfigureAwait(false);
 
 		var responseXml = await response.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
-		_logger.LogDebug("{method} got response XML: {xml}", nameof(Subscribe), responseXml);
+		_logger.LogDebug("{method} got response XML: {xml}", nameof(SubscribeAsync), responseXml);
 
 		return subscriptionRequest;
 	}
 
-	public async Task<IEnumerable<TResult>> GetDataReadyResults(CancellationToken cancellationToken)
+	public async Task<IEnumerable<TResult>> GetDataReadyResultsAsync(CancellationToken cancellationToken)
 	{
 		var siriResponse = await MakeDataSuplyRequest(cancellationToken).ConfigureAwait(false);
 		var result = ConvertResponse(siriResponse);

@@ -1,5 +1,6 @@
 using Microsoft.Extensions.Logging;
 using Mtd.Siri.Core.Client.Generic;
+using Mtd.Siri.Core.Config;
 using Mtd.Siri.Core.Serialization.Request.RequestRoot;
 using Mtd.Siri.Core.Serialization.Request.StopMonitoring;
 using Mtd.Siri.Core.Serialization.Response;
@@ -9,24 +10,18 @@ using Mtd.Stopwatch.Core.Entities.Realtime;
 
 namespace Mtd.Siri.Core.Client;
 
-public interface IStopMonitoringClient
-{
-	Task<IEnumerable<Departure>> GetDeparturesForStopPoints(CancellationToken cancellationToken, params string[] stopPointIds);
-	Task<IEnumerable<Departure>> GetDeparturesForStopPoints(int previewMinutes, CancellationToken cancellationToken, params string[] stopPointIds);
-}
-
-public sealed class StopMonitoringClient(StopMonitoringClientConfig config, HttpClient httpClient, ILogger<StopMonitoringClient> logger)
+public sealed class StopMonitoringClient(StopMonitoringClientOptions config, HttpClient httpClient, ILogger<StopMonitoringClient> logger)
 	: RequestResponseClient<StopMonitoringServiceRequest, StopMonitoringServiceDelivery, Departure>(config, httpClient, logger), IStopMonitoringClient
 {
-	public Task<IEnumerable<Departure>> GetDeparturesForStopPoints(CancellationToken cancellationToken, params string[] stopPointIds) => GetDeparturesForStopPoints(30, cancellationToken, stopPointIds);
+	public Task<IEnumerable<Departure>> GetDeparturesForStopPointsAsync(CancellationToken cancellationToken, params string[] stopPointIds) => GetDeparturesForStopPointsAsync(30, cancellationToken, stopPointIds);
 
-	public Task<IEnumerable<Departure>> GetDeparturesForStopPoints(int previewMinutes, CancellationToken cancellationToken, params string[] stopPointIds)
+	public Task<IEnumerable<Departure>> GetDeparturesForStopPointsAsync(int previewMinutes, CancellationToken cancellationToken, params string[] stopPointIds)
 	{
 		var stopPoints = stopPointIds
 			.Select(spId => new StopMonitoringRequest(spId, previewMinutes))
 			.ToArray();
 
-		_logger.LogDebug("{method} requesting SM for: {stopIds}", nameof(GetDeparturesForStopPoints), string.Join(", ", stopPointIds));
+		_logger.LogDebug("{method} requesting SM for: {stopIds}", nameof(GetDeparturesForStopPointsAsync), string.Join(", ", stopPointIds));
 		var request = new RequestResponseRequest<StopMonitoringServiceRequest>
 		{
 			Request =

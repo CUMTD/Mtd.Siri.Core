@@ -27,7 +27,7 @@ public abstract class Client<TServiceDelivery, TResult>
 
 	#region Protected Methods
 
-	protected async Task<HttpResponseMessage> PostRequest(string endpoint, string requestData, CancellationToken cancellationToken)
+	protected async Task<HttpResponseMessage> PostRequest(Uri endpoint, string requestData, CancellationToken cancellationToken)
 	{
 		var content = new StringContent(requestData, Encoding.UTF8, "text/xml");
 

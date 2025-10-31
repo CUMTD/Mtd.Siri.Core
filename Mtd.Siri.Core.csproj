@@ -26,5 +26,9 @@
 	<ItemGroup>
 	  <PackageReference Include="Mtd.Stopwatch.Core" />
 	</ItemGroup>
+	
+	<ItemGroup>
+	  <Folder Include="Client\Concrete\" />
+	</ItemGroup>
 
 </Project>
