@@ -1,4 +1,5 @@
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Mtd.Siri.Core.Client.Generic;
 using Mtd.Siri.Core.Config;
 using Mtd.Siri.Core.Serialization.Request.RequestRoot;
@@ -10,7 +11,7 @@ using Mtd.Stopwatch.Core.Entities.Realtime;
 
 namespace Mtd.Siri.Core.Client;
 
-public sealed class StopMonitoringClient(StopMonitoringClientOptions config, HttpClient httpClient, ILogger<StopMonitoringClient> logger)
+public sealed class StopMonitoringClient(IOptions<StopMonitoringClientOptions> config, HttpClient httpClient, ILogger<StopMonitoringClient> logger)
 	: RequestResponseClient<StopMonitoringServiceRequest, StopMonitoringServiceDelivery, Departure>(config, httpClient, logger), IStopMonitoringClient
 {
 	public Task<IEnumerable<Departure>> GetDeparturesForStopPointsAsync(CancellationToken cancellationToken, params string[] stopPointIds) => GetDeparturesForStopPointsAsync(30, cancellationToken, stopPointIds);

@@ -1,4 +1,5 @@
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Mtd.Siri.Core.Client.Generic;
 using Mtd.Siri.Core.Config;
 using Mtd.Siri.Core.Serialization.Request.RequestRoot;
@@ -14,13 +15,13 @@ public sealed class VehicleMonitoringClient : SubscriptionClient<VMSubscriptionR
 {
 	private readonly int _subscriptionIntervalMinutes;
 
-	public VehicleMonitoringClient(VehicleMonitoringClientOptions config, HttpClient httpClient, ILogger<VehicleMonitoringClient> logger)
+	public VehicleMonitoringClient(IOptions<VehicleMonitoringClientOptions> config, HttpClient httpClient, ILogger<VehicleMonitoringClient> logger)
 		: base(config, httpClient, logger)
 	{
-		ArgumentNullException.ThrowIfNull(config, nameof(config));
-		ArgumentOutOfRangeException.ThrowIfLessThan(config.SubscriptionIntervalMinutes, 1, nameof(config.SubscriptionIntervalMinutes));
+		ArgumentNullException.ThrowIfNull(config?.Value, nameof(config));
+		ArgumentOutOfRangeException.ThrowIfLessThan(config.Value.SubscriptionIntervalMinutes, 1, nameof(config.Value.SubscriptionIntervalMinutes));
 
-		_subscriptionIntervalMinutes = config.SubscriptionIntervalMinutes;
+		_subscriptionIntervalMinutes = config.Value.SubscriptionIntervalMinutes;
 	}
 
 	protected override IEnumerable<MonitoredVehicle> ConvertResponse(SiriResponse<VehicleMonitoringServiceDelivery> siriResponse)

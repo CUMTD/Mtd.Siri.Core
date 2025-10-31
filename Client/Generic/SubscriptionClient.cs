@@ -1,4 +1,5 @@
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Mtd.Siri.Core.Config;
 using Mtd.Siri.Core.Serialization.Request;
 using Mtd.Siri.Core.Serialization.Request.RequestRoot;
@@ -15,17 +16,17 @@ public abstract class SubscriptionClient<TSubscriptionRequest, TServiceDelivery,
 	protected readonly Uri _dataSuplyEndpointAddress;
 	protected readonly string _subscriberRef;
 
-	protected SubscriptionClient(SubscriptionClientOptions config, HttpClient httpClient, ILogger<SubscriptionClient<TSubscriptionRequest, TServiceDelivery, TResult>> logger)
+	protected SubscriptionClient(IOptions<SubscriptionClientOptions> config, HttpClient httpClient, ILogger<SubscriptionClient<TSubscriptionRequest, TServiceDelivery, TResult>> logger)
 		: base(httpClient, logger)
 	{
-		ArgumentNullException.ThrowIfNull(config, nameof(config));
-		ArgumentNullException.ThrowIfNull(config.SubscribeAddress, nameof(config.SubscribeAddress));
-		ArgumentNullException.ThrowIfNull(config.DataSuplyEndpointAddress, nameof(config.DataSuplyEndpointAddress));
-		ArgumentException.ThrowIfNullOrWhiteSpace(config.SubscriberRef, nameof(config.SubscriberRef));
+		ArgumentNullException.ThrowIfNull(config?.Value, nameof(config));
+		ArgumentNullException.ThrowIfNull(config.Value.SubscribeAddress, nameof(config.Value.SubscribeAddress));
+		ArgumentNullException.ThrowIfNull(config.Value.DataSuplyEndpointAddress, nameof(config.Value.DataSuplyEndpointAddress));
+		ArgumentException.ThrowIfNullOrWhiteSpace(config.Value.SubscriberRef, nameof(config.Value.SubscriberRef));
 
-		_subscribeAddress = config.SubscribeAddress;
-		_dataSuplyEndpointAddress = config.DataSuplyEndpointAddress;
-		_subscriberRef = config.SubscriberRef;
+		_subscribeAddress = config.Value.SubscribeAddress;
+		_dataSuplyEndpointAddress = config.Value.DataSuplyEndpointAddress;
+		_subscriberRef = config.Value.SubscriberRef;
 	}
 
 	protected virtual SubscriptionRequest<TSubscriptionRequest> CreateRequest()

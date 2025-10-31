@@ -1,4 +1,5 @@
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Mtd.Siri.Core.Config;
 using Mtd.Siri.Core.Serialization.Request;
 using Mtd.Siri.Core.Serialization.Request.RequestRoot;
@@ -15,14 +16,14 @@ public abstract class RequestResponseClient<T_ServiceRequest, T_ServiceDelivery,
 	private readonly Uri _endpointAddress;
 	private readonly bool _logResponse;
 
-	protected RequestResponseClient(RequestResponseClientOptions config, HttpClient httpClient, ILogger<RequestResponseClient<T_ServiceRequest, T_ServiceDelivery, T_Result>> logger)
+	protected RequestResponseClient(IOptions<RequestResponseClientOptions> config, HttpClient httpClient, ILogger<RequestResponseClient<T_ServiceRequest, T_ServiceDelivery, T_Result>> logger)
 		: base(httpClient, logger)
 	{
 		ArgumentNullException.ThrowIfNull(config, nameof(config));
-		ArgumentNullException.ThrowIfNull(config.Endpoint, nameof(config.Endpoint));
+		ArgumentNullException.ThrowIfNull(config.Value.Endpoint, nameof(config.Value.Endpoint));
 
-		_endpointAddress = config.Endpoint;
-		_logResponse = config.LogResponse;
+		_endpointAddress = config.Value.Endpoint;
+		_logResponse = config.Value.LogResponse;
 	}
 
 	protected async Task<IEnumerable<T_Result>> RequestData(RequestResponseRequest<T_ServiceRequest> request, CancellationToken cancellationToken)

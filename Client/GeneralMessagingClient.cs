@@ -1,4 +1,5 @@
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Mtd.Siri.Core.Client.Generic;
 using Mtd.Siri.Core.Config;
 using Mtd.Siri.Core.Serialization.Request.GeneralMessaging;
@@ -10,7 +11,7 @@ using Message = Mtd.Stopwatch.Core.Entities.Realtime.Message;
 
 namespace Mtd.Siri.Core.Client;
 
-public sealed class GeneralMessagingClient(GeneralMessagingClientOptions config, HttpClient httpClient, ILogger<GeneralMessagingClient> logger)
+public sealed class GeneralMessagingClient(IOptions<GeneralMessagingClientOptions> config, HttpClient httpClient, ILogger<GeneralMessagingClient> logger)
 	: RequestResponseClient<GeneralMessagingServiceRequest, GeneralMessageServiceDelivery, Message>(config, httpClient, logger), IGeneralMessagingClient
 {
 	public async Task<IEnumerable<Message>> GetAllMessagesAsync(CancellationToken cancellationToken)
