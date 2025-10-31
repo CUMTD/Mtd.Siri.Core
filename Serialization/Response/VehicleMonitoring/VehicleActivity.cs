@@ -1,9 +1,11 @@
-using System;
+using Mtd.Siri.Core.Parsers;
+using System.Diagnostics;
 using System.Xml.Serialization;
 
 namespace Mtd.Siri.Core.Serialization.Response.VehicleMonitoring
 {
 	[Serializable]
+	[DebuggerDisplay("{VehicleJourney?.RouteId} {VehicleJourney?.RouteNumber} @ {RecordedAt:o}")]
 	public class VehicleActivity
 	{
 		[XmlElement("RecordedAtTime")]
@@ -24,7 +26,8 @@ namespace Mtd.Siri.Core.Serialization.Response.VehicleMonitoring
 		public ProgressBetweenStops? ProgressBetweenStops { get; set; }
 
 		[XmlElement("MonitoredVehicleJourney")]
-		public MonitoredVehicleJourney VehicleJourney { get; set; } = default!; // required in practice
+		public MonitoredVehicleJourney VehicleJourney { get; set; } = default!;
+		public TimeSpan? DelaySpan => IsoDuration.TryParse(VehicleJourney?.Delay);
 
 		[XmlElement("Extensions")]
 		public Extensions? Extensions { get; set; }

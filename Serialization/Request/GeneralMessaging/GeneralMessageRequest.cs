@@ -18,7 +18,7 @@ namespace Mtd.Siri.Core.Serialization.Request.GeneralMessaging
 
 		public GeneralMessageRequest()
 		{
-			Timestamp = TimeProvider.System.GetUtcNow();
+			Timestamp = TimeProvider.System.GetLocalNow();
 			InfoChannel = "TEXT";
 			Version = "1.0";
 		}

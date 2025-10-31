@@ -9,6 +9,10 @@ namespace Mtd.Siri.Core.Serialization.Response.VehicleMonitoring
 	public class Extensions
 	{
 		[XmlElement(Namespace = "http://www.init-ka.de/occupancy")]
-		public OccupancyDataExtension OccupancyData { get; set; }
+		public OccupancyDataExtension? OccupancyData { get; set; }
+
+		[XmlAnyElement]
+		public System.Xml.XmlElement[]? UnknownElements { get; set; }
+
 	}
 }
