@@ -1,5 +1,7 @@
 # Mtd.Siri.Core
 
+[![.NET Build and Test](https://github.com/CUMTD/Mtd.Siri.Core/actions/workflows/built-test.yml/badge.svg)](https://github.com/CUMTD/Mtd.Siri.Core/actions/workflows/built-test.yml)
+![GitHub Release](https://img.shields.io/github/v/release/CUMTD/Mtd.Siri.Core?include_prereleases&sort=semver&display_name=release&label=latest%20release)
 
 ## GitHub NuGet Feed
 
