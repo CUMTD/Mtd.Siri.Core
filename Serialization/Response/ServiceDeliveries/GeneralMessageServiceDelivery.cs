@@ -6,6 +6,6 @@ namespace Mtd.Siri.Core.Serialization.Response.ServiceDeliveries
 	public class GeneralMessageServiceDelivery : RequestResponseServiceDelivery
 	{
 		[XmlElement("GeneralMessageDelivery")]
-		public Result Result { get; set; }
+		public Result? Result { get; set; }
 	}
 }

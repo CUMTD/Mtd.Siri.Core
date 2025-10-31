@@ -8,15 +8,15 @@ namespace Mtd.Siri.Core.Serialization.Response.GeneralMessaging
 	public class GeneralMessage
 	{
 		[XmlElement("InfoMessageIdentifier")]
-		public string Id { get; set; }
+		public string Id { get; set; } = default!;
 
 		[XmlElement("RecordedAtTime")]
 		public DateTime Timestamp { get; set; }
 
 		[XmlElement("InfoChannelRef")]
-		public string InfoChannel { get; set; }
+		public string? InfoChannel { get; set; }
 
 		[XmlElement("Content")]
-		public Content Content { get; set; }
+		public Content Content { get; set; } = default!;
 	}
 }

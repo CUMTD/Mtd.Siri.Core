@@ -11,8 +11,9 @@ namespace Mtd.Siri.Core.Serialization.Response
 		public DateTime Timestamp { get; set; }
 
 		[XmlElement("ProducerRef")]
-		public string Producer { get; set; }
+		public string? Producer { get; set; }
 
-		public string ResponseMessageIdentifier { get; set; }
+		[XmlElement("ResponseMessageIdentifier")]
+		public string? ResponseMessageIdentifier { get; set; }
 	}
 }

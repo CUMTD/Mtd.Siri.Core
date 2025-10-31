@@ -9,41 +9,42 @@ namespace Mtd.Siri.Core.Serialization.Response.GeneralMessaging
 	public class Message
 	{
 		[XmlElement("id", Namespace = "http://www.init-ka.de/vdv/vdv453InitAND")]
-		public string Id { get; set; }
+		public string Id { get; set; } = default!;
 
 		[XmlElement("creationTime", Namespace = "http://www.init-ka.de/vdv/vdv453InitAND")]
 		public DateTime Created { get; set; }
 
 		[XmlElement("displayId", Namespace = "http://www.init-ka.de/vdv/vdv453InitAND")]
-		public string DisplayId { get; set; }
+		public string? DisplayId { get; set; }
 
 		[XmlElement("text", Namespace = "http://www.init-ka.de/vdv/vdv453InitAND")]
-		public MessageText Text { get; set; }
+		public MessageText? Text { get; set; }
 
 		[XmlElement("periodical", Namespace = "http://www.init-ka.de/vdv/vdv453InitAND")]
-		public bool IsPeriodical { get; set; }
+		public bool? IsPeriodical { get; set; }
 
 		[XmlElement("firstDay", DataType = "date", Namespace = "http://www.init-ka.de/vdv/vdv453InitAND")]
-		public DateTime StartDay { get; set; }
+		public DateTime? StartDay { get; set; }
 
 		[XmlElement("lastDay", DataType = "date", Namespace = "http://www.init-ka.de/vdv/vdv453InitAND")]
-		public DateTime EndDay { get; set; }
+		public DateTime? EndDay { get; set; }
 
 		[XmlElement("startTime", DataType = "time", Namespace = "http://www.init-ka.de/vdv/vdv453InitAND")]
-		public DateTime StartTime { get; set; }
+		public DateTime? StartTime { get; set; }
 
 		[XmlElement("endTime", DataType = "time", Namespace = "http://www.init-ka.de/vdv/vdv453InitAND")]
-		public DateTime EndTime { get; set; }
+		public DateTime? EndTime { get; set; }
 
 		[XmlElement("horizontalAlingment", Namespace = "http://www.init-ka.de/vdv/vdv453InitAND")]
-		public string HorizontalAlingment { get; set; }
+		public string? HorizontalAlingment { get; set; }
 
 		[XmlElement("priority", Namespace = "http://www.init-ka.de/vdv/vdv453InitAND")]
-		public string Priority { get; set; }
+		public string? Priority { get; set; }
 
+		[XmlIgnore]
 		public bool BlockRealtime => string.Equals(Priority, "EXCLUSIVE", StringComparison.OrdinalIgnoreCase);
 
 		[XmlElement("stopId", Namespace = "http://www.init-ka.de/vdv/vdv453InitAND")]
-		public string[] StopIds { get; set; }
+		public string[]? StopIds { get; set; }
 	}
 }

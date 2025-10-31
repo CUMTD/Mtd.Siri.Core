@@ -13,7 +13,7 @@ namespace Mtd.Siri.Core.Serialization.Response.StopMonitoring
 		public bool Status { get; set; }
 
 		[XmlElement("MonitoredStopVisit")]
-		public MonitoredStopVisit[] Results { get; set; }
+		public MonitoredStopVisit[]? Results { get; set; }
 
 		[XmlAttribute("version")]
 		public decimal Version { get; set; }

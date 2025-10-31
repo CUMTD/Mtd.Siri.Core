@@ -8,6 +8,6 @@ namespace Mtd.Siri.Core.Serialization.Response.GeneralMessaging
 	public class MessageText
 	{
 		[XmlElement("textLine", Namespace = "http://www.init-ka.de/vdv/vdv453InitAND")]
-		public string[] Lines { get; set; }
+		public string[]? Lines { get; set; }
 	}
 }

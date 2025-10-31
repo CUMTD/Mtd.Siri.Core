@@ -15,6 +15,6 @@ namespace Mtd.Siri.Core.Serialization.Response.GeneralMessaging
 		public bool Status { get; set; }
 
 		[XmlElement("GeneralMessage")]
-		public GeneralMessage[] Messages { get; set; }
+		public GeneralMessage[]? Messages { get; set; }
 	}
 }

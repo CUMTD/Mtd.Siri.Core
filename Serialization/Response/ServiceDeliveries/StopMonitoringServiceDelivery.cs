@@ -6,6 +6,6 @@ namespace Mtd.Siri.Core.Serialization.Response.ServiceDeliveries
 	public class StopMonitoringServiceDelivery : RequestResponseServiceDelivery
 	{
 		[XmlElement("StopMonitoringDelivery")]
-		public Result[] Result { get; set; }
+		public Result[]? Result { get; set; }
 	}
 }

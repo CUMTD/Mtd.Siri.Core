@@ -7,29 +7,33 @@ namespace Mtd.Siri.Core.Serialization.Response.StopMonitoring
 	[XmlType(AnonymousType = true, Namespace = "http://www.siri.org.uk/")]
 	public class MonitoredCall
 	{
-		public int VisitNumber { get; set; }
+		public int? VisitNumber { get; set; }
 
 		[XmlElement("VehicleAtStop")]
-		public bool IsVehicleAtStop { get; set; }
+		public bool? IsVehicleAtStop { get; set; }
 
 		[XmlElement("DestinationDisplay")]
-		public string Headsign { get; set; }
+		public string? Headsign { get; set; }
 
 		[XmlElement("AimedArrivalTime")]
-		public DateTime ScheduledArrival { get; set; }
+		public DateTime? ScheduledArrival { get; set; }
 
 		[XmlElement("ExpectedArrivalTime")]
-		public DateTime EstimatedArrival { get; set; }
+		public DateTime? EstimatedArrival { get; set; }
 
 		[XmlElement("AimedDepartureTime")]
-		public DateTime ScheduledDeparture { get; set; }
+		public DateTime? ScheduledDeparture { get; set; }
 
 		[XmlElement("ExpectedDepartureTime")]
-		public DateTime EstimatedDeparture { get; set; }
+		public DateTime? EstimatedDeparture { get; set; }
 
 		[XmlElement("DeparturePlatformName")]
-		public byte DeparturePlatform { get; set; }
+		public string? DeparturePlatform { get; set; }
 
-		public TimeSpan ScheduleAdherence => EstimatedDeparture - ScheduledDeparture;
+		[XmlIgnore]
+		public TimeSpan? ScheduleAdherence =>
+			(EstimatedDeparture.HasValue && ScheduledDeparture.HasValue)
+				? EstimatedDeparture.Value - ScheduledDeparture.Value
+				: (TimeSpan?)null;
 	}
 }

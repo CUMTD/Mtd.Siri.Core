@@ -11,15 +11,15 @@ namespace Mtd.Siri.Core.Serialization.Response.VehicleMonitoring
 		public DateTime Timestamp { get; set; }
 
 		[XmlElement("SubscriberRef")]
-		public string Subscriber { get; set; }
+		public string? Subscriber { get; set; }
 
 		[XmlElement("SubscriptionRef")]
-		public string Subscription { get; set; }
+		public string? Subscription { get; set; }
 
-		public bool Status { get; set; }
+		public bool? Status { get; set; }
 
 		[XmlElement("VehicleActivity")]
-		public VehicleActivity[] VehicleActivities { get; set; }
+		public VehicleActivity[]? VehicleActivities { get; set; }
 
 		[XmlAttribute("version")]
 		public decimal Version { get; set; }

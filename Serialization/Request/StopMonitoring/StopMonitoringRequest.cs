@@ -11,18 +11,17 @@ namespace Mtd.Siri.Core.Serialization.Request.StopMonitoring
 		public DateTimeOffset Timestamp { get; set; }
 
 		[XmlElement("PreviewInterval", DataType = "duration")]
-		public string PreviewTime { get; set; }
+		public string? PreviewTime { get; set; }
 
 		[XmlElement("MonitoringRef")]
-		public string StopPointId { get; set; }
+		public string StopPointId { get; set; } = default!;
 
 		[XmlAttribute("version")]
-		public string Version { get; set; }
+		public string Version { get; set; } = "1.0";
 
 		public StopMonitoringRequest()
 		{
 			Timestamp = TimeProvider.System.GetLocalNow();
-			Version = "1.0";
 		}
 
 		public StopMonitoringRequest(string stopPointId, int previewMinutes = 30) : this()

@@ -7,8 +7,7 @@ namespace Mtd.Siri.Core.Serialization.Response
 	[XmlType("ServiceDelivery", AnonymousType = true, Namespace = "http://www.siri.org.uk/")]
 	public abstract class RequestResponseServiceDelivery : ServiceDelivery
 	{
-		public bool Status { get; set; }
-
-		public bool MoreData { get; set; }
+		public bool? Status { get; set; }
+		public bool? MoreData { get; set; }
 	}
 }
